@@ -19,4 +19,13 @@ const createTask = async (form) => {
   }
 };
 
-export { getTasks, createTask };
+const moveTask = async (task) => {
+  try {
+    const response = await instance.patch(tasks.move(task.id), task);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { getTasks, createTask, moveTask };

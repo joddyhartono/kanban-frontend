@@ -1,9 +1,43 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Column from "../components/Column";
 import useTask from "../hooks/useTask";
 
 const Board = () => {
-  const { tasks, handleCreate, handleGetTasks } = useTask();
+  const { tasks, handleCreate, handleGetTasks, handleMoveTask } = useTask();
+  const [draggedTask, setDraggedTask] = useState(null);
+
+  const handleDragStart = (task) => {
+    setDraggedTask(task);
+  };
+  const handleDragEnd = () => {
+    setDraggedTask(null);
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  const handleDrop = (status) => {
+    if (!draggedTask) {
+      return;
+    }
+
+    handleMoveTask({
+      id: draggedTask.id,
+      status: status,
+    });
+    setDraggedTask(null);
+  };
+
+  const toDo = tasks
+    .filter((task) => task.status === "To do")
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+  const inProgress = tasks
+    .filter((task) => task.status === "In progress")
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+  const done = tasks
+    .filter((task) => task.status === "Done")
+    .sort((a, b) => a.sortOrder - b.sortOrder);
 
   useEffect(() => {
     handleGetTasks();
@@ -21,15 +55,38 @@ const Board = () => {
           text="To do"
           canAdd={true}
           handleCreate={handleCreate}
-          tasks={tasks}
+          tasks={toDo}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          onDragOver={handleDragOver}
+          onDrop={() => {
+            handleDrop("To do");
+          }}
         />
         <Column
           color="bg-yellow-500"
           text="In progress"
           canAdd={false}
-          tasks={tasks}
+          tasks={inProgress}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          onDragOver={handleDragOver}
+          onDrop={() => {
+            handleDrop("In progress");
+          }}
         />
-        <Column color="bg-green-500" text="Done" canAdd={false} tasks={tasks} />
+        <Column
+          color="bg-green-500"
+          text="Done"
+          canAdd={false}
+          tasks={done}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          onDragOver={handleDragOver}
+          onDrop={() => {
+            handleDrop("Done");
+          }}
+        />
       </div>
     </div>
   );

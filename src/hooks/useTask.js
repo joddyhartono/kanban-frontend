@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createTask, getTasks } from "../services/taskService";
+import { createTask, getTasks, moveTask } from "../services/taskService";
 
 const useTask = () => {
   const [tasks, setTasks] = useState([]);
@@ -7,7 +7,7 @@ const useTask = () => {
   const handleCreate = async (form) => {
     try {
       const data = await createTask(form);
-      setTasks([...tasks], data);
+      setTasks([...tasks, data]);
     } catch (error) {
       console.error(error);
     }
@@ -16,7 +16,25 @@ const useTask = () => {
   const handleGetTasks = async () => {
     try {
       const data = await getTasks();
+      console.log(data);
       setTasks(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleMoveTask = async (task) => {
+    try {
+      const data = await moveTask(task);
+      if (!data) {
+        return;
+      }
+
+      setTasks((tasks) => {
+        return tasks.map((task) => {
+          return task.id === data.id ? data : task;
+        });
+      });
     } catch (error) {
       console.error(error);
     }
@@ -26,6 +44,7 @@ const useTask = () => {
     tasks,
     handleCreate,
     handleGetTasks,
+    handleMoveTask,
   };
 };
 

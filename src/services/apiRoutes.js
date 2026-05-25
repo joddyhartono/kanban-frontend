@@ -4,6 +4,9 @@ const tasks = {
   getById: "",
   update: "",
   delete: "",
+  move: (id) => {
+    return `tasks/${id}/status`;
+  },
 };
 
 export { tasks };

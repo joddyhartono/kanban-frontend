@@ -1,7 +1,17 @@
 import { useState } from "react";
 import { Button, Label, Input } from "./ui";
+import TaskCard from "./TaskCard";
 
-const Column = ({ color, text, canAdd, handleCreate }) => {
+const Column = ({
+  color,
+  text,
+  canAdd,
+  handleCreate,
+  tasks,
+  onDragStart,
+  onDragEnd,
+  ...props
+}) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [form, setForm] = useState({
     title: "",
@@ -18,7 +28,6 @@ const Column = ({ color, text, canAdd, handleCreate }) => {
       event.preventDefault();
 
       const data = await handleCreate(form);
-      console.log(data);
 
       if (data) {
         setForm({ title: "", description: "", dueDate: "" });
@@ -36,19 +45,32 @@ const Column = ({ color, text, canAdd, handleCreate }) => {
       >
         {text}
       </div>
-      <div className="bg-slate-800 w-full rounded-lg p-3 min-h-24"></div>
+      <div
+        className="bg-slate-800 w-full rounded-lg p-3 min-h-24 flex flex-col gap-2"
+        {...props}
+      >
+        {tasks &&
+          tasks.map((task) => (
+            <TaskCard
+              key={task.id}
+              task={task}
+              onDragStart={onDragStart}
+              onDragEnd={onDragEnd}
+            />
+          ))}
+      </div>
       {canAdd && (
         <>
           <Button
             onClick={() => setIsFormOpen(!isFormOpen)}
-            className="text-slate-400 hover:text-white hover:bg-slate-800"
+            className="hover:bg-slate-800 font-medium"
           >
             + Add card
           </Button>
           {isFormOpen && (
-            <form onSubmit={handleSubmit}>
-              <div>
-                <Label>Title</Label>
+            <form onSubmit={handleSubmit} className="w-72 flex flex-col gap-2">
+              <div className="flex gap-2">
+                <Label className="w-1/2">Title</Label>
                 <Input
                   type="text"
                   name="title"
@@ -57,8 +79,8 @@ const Column = ({ color, text, canAdd, handleCreate }) => {
                 />
               </div>
 
-              <div>
-                <Label>Description</Label>
+              <div className="flex gap-2">
+                <Label className="w-1/2">Description</Label>
                 <Input
                   type="text"
                   name="description"
@@ -67,12 +89,15 @@ const Column = ({ color, text, canAdd, handleCreate }) => {
                 />
               </div>
 
-              <div>
-                <Label>Due date</Label>
+              <div className="flex gap-2">
+                <Label className="w-1/2">Due date</Label>
                 <Input type="date" name="dueDate" onChange={handleChange} />
               </div>
 
-              <Button type="submit" className="bg-orange-500">
+              <Button
+                type="submit"
+                className="bg-orange-500 hover:bg-orange-800"
+              >
                 Add new task
               </Button>
             </form>
