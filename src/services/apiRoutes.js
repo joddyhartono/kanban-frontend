@@ -3,7 +3,9 @@ const tasks = {
   getAll: "/tasks",
   getById: "",
   update: "",
-  delete: "",
+  delete: (id) => {
+    return `tasks/${id}`;
+  },
   move: (id) => {
     return `tasks/${id}/status`;
   },

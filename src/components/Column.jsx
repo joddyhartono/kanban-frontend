@@ -10,6 +10,8 @@ const Column = ({
   tasks,
   onDragStart,
   onDragEnd,
+  handleUpdate,
+  handleDelete,
   ...props
 }) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -56,6 +58,8 @@ const Column = ({
               task={task}
               onDragStart={onDragStart}
               onDragEnd={onDragEnd}
+              handleUpdate={handleUpdate}
+              handleDelete={handleDelete}
             />
           ))}
       </div>
@@ -69,7 +73,7 @@ const Column = ({
           </Button>
           {isFormOpen && (
             <form onSubmit={handleSubmit} className="w-72 flex flex-col gap-2">
-              <div className="flex gap-2">
+              <div className="flex gap-2 items-center">
                 <Label className="w-1/2">Title</Label>
                 <Input
                   type="text"
@@ -79,7 +83,7 @@ const Column = ({
                 />
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex gap-2 items-center">
                 <Label className="w-1/2">Description</Label>
                 <Input
                   type="text"
@@ -89,7 +93,7 @@ const Column = ({
                 />
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex gap-2 items-center">
                 <Label className="w-1/2">Due date</Label>
                 <Input type="date" name="dueDate" onChange={handleChange} />
               </div>

@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { createTask, getTasks, moveTask } from "../services/taskService";
+import {
+  createTask,
+  getTasks,
+  moveTask,
+  updateTask,
+  deleteTask,
+} from "../services/taskService";
 
 const useTask = () => {
   const [tasks, setTasks] = useState([]);
@@ -16,7 +22,6 @@ const useTask = () => {
   const handleGetTasks = async () => {
     try {
       const data = await getTasks();
-      console.log(data);
       setTasks(data);
     } catch (error) {
       console.error(error);
@@ -40,11 +45,28 @@ const useTask = () => {
     }
   };
 
+  const handleUpdate = async (task) => {};
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteTask(id);
+      setTasks((tasks) => {
+        return tasks.filter((task) => {
+          return task.id !== id;
+        });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return {
     tasks,
     handleCreate,
     handleGetTasks,
     handleMoveTask,
+    handleUpdate,
+    handleDelete,
   };
 };
 

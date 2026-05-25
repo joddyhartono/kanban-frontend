@@ -3,7 +3,14 @@ import Column from "../components/Column";
 import useTask from "../hooks/useTask";
 
 const Board = () => {
-  const { tasks, handleCreate, handleGetTasks, handleMoveTask } = useTask();
+  const {
+    tasks,
+    handleCreate,
+    handleGetTasks,
+    handleMoveTask,
+    handleUpdate,
+    handleDelete,
+  } = useTask();
   const [draggedTask, setDraggedTask] = useState(null);
 
   const handleDragStart = (task) => {
@@ -62,6 +69,8 @@ const Board = () => {
           onDrop={() => {
             handleDrop("To do");
           }}
+          handleUpdate={handleUpdate}
+          handleDelete={handleDelete}
         />
         <Column
           color="bg-yellow-500"
@@ -74,6 +83,8 @@ const Board = () => {
           onDrop={() => {
             handleDrop("In progress");
           }}
+          handleUpdate={handleUpdate}
+          handleDelete={handleDelete}
         />
         <Column
           color="bg-green-500"
@@ -86,6 +97,8 @@ const Board = () => {
           onDrop={() => {
             handleDrop("Done");
           }}
+          handleUpdate={handleUpdate}
+          handleDelete={handleDelete}
         />
       </div>
     </div>

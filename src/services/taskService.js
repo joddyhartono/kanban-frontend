@@ -28,4 +28,14 @@ const moveTask = async (task) => {
   }
 };
 
-export { getTasks, createTask, moveTask };
+const updateTask = async () => {};
+
+const deleteTask = async (id) => {
+  try {
+    await instance.delete(tasks.delete(id));
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { getTasks, createTask, moveTask, updateTask, deleteTask };
