@@ -1,8 +1,12 @@
 const tasks = {
   create: "/tasks",
   getAll: "/tasks",
-  getById: "",
-  update: "",
+  getById: (id) => {
+    return `/tasks/${id}`;
+  },
+  update: (id) => {
+    return `/tasks/${id}`;
+  },
   delete: (id) => {
     return `tasks/${id}`;
   },

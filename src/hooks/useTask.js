@@ -5,6 +5,7 @@ import {
   moveTask,
   updateTask,
   deleteTask,
+  getTask,
 } from "../services/taskService";
 
 const useTask = () => {
@@ -14,6 +15,7 @@ const useTask = () => {
     try {
       const data = await createTask(form);
       setTasks([...tasks, data]);
+      return data;
     } catch (error) {
       console.error(error);
     }
@@ -45,7 +47,23 @@ const useTask = () => {
     }
   };
 
-  const handleUpdate = async (task) => {};
+  const handleUpdate = async (task) => {
+    try {
+      const data = await updateTask(task);
+      if (!data) {
+        return;
+      }
+
+      setTasks((tasks) => {
+        return tasks.map((task) => {
+          return task.id === data.id ? data : task;
+        });
+      });
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleDelete = async (id) => {
     try {
@@ -60,6 +78,15 @@ const useTask = () => {
     }
   };
 
+  const handleGetTask = async (id) => {
+    try {
+      const data = await getTask(id);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return {
     tasks,
     handleCreate,
@@ -67,6 +94,7 @@ const useTask = () => {
     handleMoveTask,
     handleUpdate,
     handleDelete,
+    handleGetTask,
   };
 };
 

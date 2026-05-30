@@ -28,7 +28,14 @@ const moveTask = async (task) => {
   }
 };
 
-const updateTask = async () => {};
+const updateTask = async (task) => {
+  try {
+    const response = await instance.patch(tasks.update(task.id), task);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const deleteTask = async (id) => {
   try {
@@ -38,4 +45,13 @@ const deleteTask = async (id) => {
   }
 };
 
-export { getTasks, createTask, moveTask, updateTask, deleteTask };
+const getTask = async (id) => {
+  try {
+    const response = await instance.get(tasks.getById(id));
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { getTasks, createTask, moveTask, updateTask, deleteTask, getTask };

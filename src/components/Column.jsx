@@ -18,7 +18,7 @@ const Column = ({
   const [form, setForm] = useState({
     title: "",
     description: "",
-    dueDate: "",
+    dueDate: null,
   });
 
   const handleChange = (event) => {
@@ -32,7 +32,7 @@ const Column = ({
       const data = await handleCreate(form);
 
       if (data) {
-        setForm({ title: "", description: "", dueDate: "" });
+        setForm({ title: "", description: "", dueDate: null });
         setIsFormOpen(!isFormOpen);
       }
     } catch (error) {
@@ -80,6 +80,7 @@ const Column = ({
                   name="title"
                   placeholder="Title"
                   onChange={handleChange}
+                  required
                 />
               </div>
 
